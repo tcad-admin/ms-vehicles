@@ -1,0 +1,108 @@
+# Vehicle Management Microservice GraphQL Schema
+
+type Vehicle {
+  id: String!
+  make: String!
+  model: String!
+  color: String!
+  ownerId: String!
+  year: Int
+  licensePlate: String
+  vin: String
+  mileage: Int
+  fuelType: String
+  transmission: String
+  status: String
+  notes: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+input CreateVehicleInput {
+  make: String!
+  model: String!
+  color: String!
+  ownerId: String!
+  year: Int
+  licensePlate: String
+  vin: String
+  mileage: Int
+  fuelType: String
+  transmission: String
+  status: String
+  notes: String
+}
+
+input UpdateVehicleInput {
+  id: String!
+  make: String
+  model: String
+  year: Int
+  licensePlate: String
+  vin: String
+  color: String
+  mileage: Int
+  fuelType: String
+  transmission: String
+  status: String
+  ownerId: String
+  notes: String
+}
+
+type DeleteResponse {
+  success: Boolean!
+  id: String!
+}
+
+type Query {
+  # Get a specific vehicle by ID
+  getVehicle(id: String!): Vehicle!
+  
+  # List all vehicles
+  listAllVehicles: [Vehicle!]!
+  
+  # List vehicles by status
+  listVehiclesByStatus(status: String!): [Vehicle!]!
+  
+  # List vehicles by owner
+  listVehiclesByOwner(ownerId: String!): [Vehicle!]!
+  
+  # Search vehicles by make, model, license plate, or VIN
+  searchVehicles(searchTerm: String!): [Vehicle!]!
+}
+
+type Mutation {
+  # Create a new vehicle
+  createVehicle(input: CreateVehicleInput!): Vehicle!
+  
+  # Update an existing vehicle
+  updateVehicle(input: UpdateVehicleInput!): Vehicle!
+  
+  # Delete a vehicle
+  deleteVehicle(id: String!): DeleteResponse!
+}
+
+# Vehicle Status Enum (for reference)
+enum VehicleStatus {
+  PRIMARY
+  SECONDARY
+  OTHER
+}
+
+# Fuel Type Enum (for reference)
+enum FuelType {
+  GASOLINE
+  DIESEL
+  ELECTRIC
+  HYBRID
+  PLUG_IN_HYBRID
+  HYDROGEN
+}
+
+# Transmission Type Enum (for reference)
+enum TransmissionType {
+  AUTOMATIC
+  MANUAL
+  CVT
+  SEMI_AUTOMATIC
+} 

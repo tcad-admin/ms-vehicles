@@ -1,0 +1,82 @@
+{
+  "createVehicle": {
+    "info": {
+      "fieldName": "createVehicle"
+    },
+    "arguments": {
+      "input": {
+        "make": "Toyota",
+        "model": "Camry",
+        "color": "Silver",
+        "ownerId": "user123",
+        "year": 2023,
+        "licensePlate": "ABC123",
+        "vin": "1HGBH41JXMN109186",
+        "mileage": 15000,
+        "fuelType": "gasoline",
+        "transmission": "automatic",
+        "status": "PRIMARY",
+        "notes": "Primary family vehicle"
+      }
+    }
+  },
+  "getVehicle": {
+    "info": {
+      "fieldName": "getVehicle"
+    },
+    "arguments": {
+      "id": "vehicle-id-here"
+    }
+  },
+  "updateVehicle": {
+    "info": {
+      "fieldName": "updateVehicle"
+    },
+    "arguments": {
+      "input": {
+        "id": "vehicle-id-here",
+        "mileage": 16000,
+        "status": "SECONDARY",
+        "notes": "Secondary vehicle for backup"
+      }
+    }
+  },
+  "deleteVehicle": {
+    "info": {
+      "fieldName": "deleteVehicle"
+    },
+    "arguments": {
+      "id": "vehicle-id-here"
+    }
+  },
+  "listAllVehicles": {
+    "info": {
+      "fieldName": "listAllVehicles"
+    },
+    "arguments": {}
+  },
+  "listVehiclesByStatus": {
+    "info": {
+      "fieldName": "listVehiclesByStatus"
+    },
+    "arguments": {
+      "status": "PRIMARY"
+    }
+  },
+  "listVehiclesByOwner": {
+    "info": {
+      "fieldName": "listVehiclesByOwner"
+    },
+    "arguments": {
+      "ownerId": "user123"
+    }
+  },
+  "searchVehicles": {
+    "info": {
+      "fieldName": "searchVehicles"
+    },
+    "arguments": {
+      "searchTerm": "Toyota"
+    }
+  }
+}
