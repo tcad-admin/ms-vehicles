@@ -5,3 +5,4 @@ cdk.out/
 .vscode/
 *.log
 .env 
+package-lock.json

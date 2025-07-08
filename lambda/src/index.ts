@@ -14,6 +14,7 @@ import {
   UpdateItemCommand
 } from "@aws-sdk/client-dynamodb"
 import { v4 as uuidv4 } from 'uuid'
+import 'dotenv/config'
 
 interface CreateVehicleInput {
   make: string
