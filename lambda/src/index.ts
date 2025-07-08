@@ -20,7 +20,7 @@ interface CreateVehicleInput {
   make: string
   model: string
   color: string
-  ownerId: string
+  userId: string
   year?: number
   licensePlate?: string
   vin?: string
@@ -43,7 +43,7 @@ interface UpdateVehicleInput {
   fuelType?: string
   transmission?: string
   status?: string
-  ownerId?: string
+  userId?: string
   notes?: string
 }
 
@@ -69,7 +69,7 @@ export const handler = async (event: AppSyncResolverEvent<any>) => {
       case 'listVehiclesByStatus':
         return await listVehiclesByStatus(args.status)
       case 'listVehiclesByOwner':
-        return await listVehiclesByOwner(args.ownerId)
+        return await listVehiclesByOwner(args.userId)
       case 'searchVehicles':
         return await searchVehicles(args.searchTerm)
       default:
@@ -85,10 +85,10 @@ export const handler = async (event: AppSyncResolverEvent<any>) => {
 }
 
 const createVehicle = async (input: CreateVehicleInput) => {
-  const { make, model, color, year, licensePlate, vin, mileage, fuelType, transmission, status, ownerId, notes } = input
+  const { make, model, color, year, licensePlate, vin, mileage, fuelType, transmission, status, userId, notes } = input
 
-  if (!make || !model || !color || !ownerId) {
-    throw new Error('Missing required parameters: make, model, color, and ownerId are required')
+  if (!make || !model || !color || !userId) {
+    throw new Error('Missing required parameters: make, model, color, and userId are required')
   }
 
   const vehicleId = uuidv4()
@@ -100,7 +100,7 @@ const createVehicle = async (input: CreateVehicleInput) => {
     make: { S: make },
     model: { S: model },
     color: { S: color },
-    ownerId: { S: ownerId },
+    userId: { S: userId },
     createdAt: { S: createdAt },
     updatedAt: { S: updatedAt }
   }
@@ -134,7 +134,7 @@ const createVehicle = async (input: CreateVehicleInput) => {
     fuelType,
     transmission,
     status,
-    ownerId,
+    userId,
     notes,
     createdAt,
     updatedAt
@@ -291,19 +291,19 @@ const listVehiclesByStatus = async (status: string) => {
   }
 }
 
-const listVehiclesByOwner = async (ownerId: string) => {
-  if (!ownerId) {
-    throw new Error('Owner ID is required')
+const listVehiclesByOwner = async (userId: string) => {
+  if (!userId) {
+    throw new Error('User ID is required')
   }
 
   const scanCommand = new ScanCommand({
     TableName: VEHICLES_TABLE,
-    FilterExpression: '#ownerId = :ownerId',
+    FilterExpression: '#userId = :userId',
     ExpressionAttributeNames: {
-      '#ownerId': 'ownerId'
+      '#userId': 'userId'
     },
     ExpressionAttributeValues: {
-      ':ownerId': { S: ownerId }
+      ':userId': { S: userId }
     }
   })
 

@@ -5,7 +5,7 @@ type Vehicle {
   make: String!
   model: String!
   color: String!
-  ownerId: String!
+  userId: String!
   year: Int
   licensePlate: String
   vin: String
@@ -22,7 +22,7 @@ input CreateVehicleInput {
   make: String!
   model: String!
   color: String!
-  ownerId: String!
+  userId: String!
   year: Int
   licensePlate: String
   vin: String
@@ -45,7 +45,7 @@ input UpdateVehicleInput {
   fuelType: String
   transmission: String
   status: String
-  ownerId: String
+  userId: String
   notes: String
 }
 
@@ -65,7 +65,7 @@ type Query {
   listVehiclesByStatus(status: String!): [Vehicle!]!
   
   # List vehicles by owner
-  listVehiclesByOwner(ownerId: String!): [Vehicle!]!
+  listVehiclesByOwner(userId: String!): [Vehicle!]!
   
   # Search vehicles by make, model, license plate, or VIN
   searchVehicles(searchTerm: String!): [Vehicle!]!
