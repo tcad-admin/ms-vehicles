@@ -16,28 +16,14 @@ export class VehiclesLambdaStack extends cdk.Stack {
     // Create a Lambda function for managing Vehicles
     const vehiclesLambda = new lambdajs.NodejsFunction(this, 'VehiclesLambda', {
       runtime: lambda.Runtime.NODEJS_LATEST,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../dist')),
+      handler: 'handler',
+      entry: path.join(__dirname, '../lambda/src/index.ts'),
       functionName: 'ms-vehicles-lambda',
       bundling: {
         minify: true,
         sourceMap: true,
         target: 'es2020',
-        commandHooks: {
-          beforeInstall() {
-            console.log('Installing dependencies before bundling...')
-            return []
-          },
-          beforeBundling(inputDir: string, outputDir: string): string[] {
-            console.log(`Input directory: ${inputDir}`)
-            console.log(`Output directory: ${outputDir}`)
-            return []
-          },
-          afterBundling(inputDir: string, outputDir: string): string[] {
-            console.log(`Bundled files moved to: ${outputDir}`)
-            return []
-          },
-        },
+        externalModules: ['aws-sdk'], // Exclude aws-sdk as it's provided by Lambda runtime
       },
       environment: {
         VEHICLES_TABLE: vehiclesTable.tableName,
