@@ -2,36 +2,43 @@ import * as cdk from 'aws-cdk-lib'
 import * as lambdajs from 'aws-cdk-lib/aws-lambda-nodejs'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb'
-import * as iam from 'aws-cdk-lib/aws-iam'
 import * as path from 'path'
 import { Construct } from 'constructs'
+import { named, Stage } from '../config/stage'
+
+export interface VehiclesLambdaStackProps extends cdk.StackProps {
+  stage: Stage
+}
 
 export class VehiclesLambdaStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props: VehiclesLambdaStackProps) {
     super(scope, id, props)
 
-    // Vehicles table
-    const vehiclesTable = dynamodb.Table.fromTableAttributes(this, 'VehiclesTable', { tableName: 'vehicles' })
+    const { stage } = props
 
-    // Create a Lambda function for managing Vehicles
+    const vehiclesTable = dynamodb.Table.fromTableAttributes(this, 'VehiclesTable', {
+      tableName: named('vehicles', stage),
+    })
+
     const vehiclesLambda = new lambdajs.NodejsFunction(this, 'VehiclesLambda', {
       runtime: lambda.Runtime.NODEJS_LATEST,
       handler: 'handler',
       entry: path.join(__dirname, '../lambda/src/index.ts'),
-      functionName: 'ms-vehicles-lambda',
+      functionName: named('ms-vehicles-lambda', stage),
       bundling: {
         minify: true,
         sourceMap: true,
         target: 'es2020',
-        externalModules: ['aws-sdk'], // Exclude aws-sdk as it's provided by Lambda runtime
+        forceDockerBundling: false,
+        externalModules: ['aws-sdk'],
       },
       environment: {
         VEHICLES_TABLE: vehiclesTable.tableName,
+        STAGE: stage,
       },
       timeout: cdk.Duration.seconds(60),
     })
 
-    // Grant the Lambda function permissions to interact with the vehicles table
     vehiclesTable.grantReadWriteData(vehiclesLambda)
   }
-} 
+}
